@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">FaceDetector</string>
+
+    <!--Tabs-->
+    <string name="tab_title_all">All</string>
+    <string name="tab_title_faces">Faces</string>
+    <string name="tab_title_non_faces">Non Faces</string>
+
+    <!--activity_main-->
+    <string name="btn_detect_text">Detect</string>
+
+    <!--notification-->
+    <string name="notification_detecting_text">Detecting Faces...</string>
+    <string name="format_detction_results_text">%1$d/%2$d Faces Detected</string>
+</resources>

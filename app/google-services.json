@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "212404911252",
+    "firebase_url": "https://facedetectionapp-f9906.firebaseio.com",
+    "project_id": "facedetectionapp-f9906",
+    "storage_bucket": "facedetectionapp-f9906.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212404911252:android:c3e81861082ed3a976c881",
+        "android_client_info": {
+          "package_name": "iam.immlkit.facedetector"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "212404911252-5egqo6ilaercm2rr4skbjoj91ani5pql.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOJKMjHaQswNu9na_SGhSkp9-Vn_5e29I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "212404911252-5egqo6ilaercm2rr4skbjoj91ani5pql.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
