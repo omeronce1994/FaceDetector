@@ -1,11 +1,11 @@
 package iam.immlkit.facedetector.model.rxbus
 
 import android.util.Log
+import androidx.arch.core.internal.SafeIterableMap
+import androidx.lifecycle.*
+import androidx.lifecycle.Observer
 import iam.immlkit.facedetector.model.rxbus.events.OnFinishedDetectionWithDialog
 import iam.immlkit.facedetector.model.rxbus.events.OnFinishedDetectionWithNotification
-
-import java.util.HashMap
-import java.util.HashSet
 
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
@@ -13,6 +13,8 @@ import rx.functions.Action0
 import rx.functions.Action1
 import rx.subjects.PublishSubject
 import rx.subjects.SerializedSubject
+import java.util.*
+import kotlin.collections.HashSet
 
 
 /**
@@ -33,6 +35,8 @@ object RxBus {
 
     private val subject = SerializedSubject(PublishSubject.create<Any>())
     private val listenersTracker = HashMap<Any, HashSet<Subscription>>()
+    private val observerTracker = mutableMapOf<LifecycleOwner,HashSet<Observer<*>>>()
+    private val liveDataMap = mutableMapOf<Class<*>,MutableLiveData<Event<Any>>>()
 
     private val onError =
         Action1<Throwable> { o -> Log.i("rxbus", "onError called" + o.javaClass.toString()) }
@@ -47,6 +51,17 @@ object RxBus {
         trackListener(listenerTag, subscription)
 
         return subscription
+    }
+
+    fun <T> register(owner:LifecycleOwner,oClass: Class<T>,observer: Observer<T>){
+        owner.lifecycle.addObserver(OwnerLifeCycleObserver(owner))
+        observerTracker.put(owner,observer)
+        val liveData: MutableLiveData<Event<T>>
+        if(liveDataMap.containsKey(oClass)){
+            liveData = liveDataMap[oClass] as MutableLiveData<Event<T>>
+        }
+        else
+            liveDataMap.put(oClass,MutableLiveData<Event<T>>())
     }
 
     fun post(event: Any) {
@@ -76,5 +91,14 @@ object RxBus {
 
     fun sendFinishedDetectionWithDialogEvent(faceCount:Int, total:Int){
         post(OnFinishedDetectionWithDialog(faceCount,total))
+    }
+
+    class OwnerLifeCycleObserver(var owner: LifecycleOwner?) : LifecycleObserver{
+
+        @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+        fun release(){
+            observerTracker.remove(owner)
+            owner = null
+        }
     }
 }
