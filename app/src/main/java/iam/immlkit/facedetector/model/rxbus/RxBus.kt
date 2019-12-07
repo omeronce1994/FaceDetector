@@ -21,7 +21,7 @@ import kotlin.collections.HashSet
  * EXAMPLE FOR LISTENING TO A CERTAIN EVENT (WE CAN USE ANY OBJECT WE LIKE, IN THIN CASE WE USE OnFinishedDetectionWithNotification CLASS)
     listenerTag - an object used to identify listeners later for removal
 
-    RxBus.listenFor(TAG,OnFinishedDetectionWithNotification::class.java,object : Action1<OnFinishedDetectionWithNotification>{
+    RxBus.subscribe(TAG,OnFinishedDetectionWithNotification::class.java,object : Action1<OnFinishedDetectionWithNotification>{
         override fun call(t: OnFinishedDetectionWithNotification?) {
             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
@@ -35,15 +35,13 @@ object RxBus {
 
     private val subject = SerializedSubject(PublishSubject.create<Any>())
     private val listenersTracker = HashMap<Any, HashSet<Subscription>>()
-    private val observerTracker = mutableMapOf<LifecycleOwner,HashSet<Observer<*>>>()
-    private val liveDataMap = mutableMapOf<Class<*>,MutableLiveData<Event<Any>>>()
 
     private val onError =
         Action1<Throwable> { o -> Log.i("rxbus", "onError called" + o.javaClass.toString()) }
 
     private val onCompleted = Action0 { Log.i("rxbus", "onCompleted called") }
 
-    fun <T> listenFor(listenerTag: Any, tClass: Class<T>, handler: Action1<T>): Subscription {
+    fun <T> subscribe(listenerTag: Any, tClass: Class<T>, handler: Action1<T>): Subscription {
         //        Subscription subscription = subject.ofType(tClass).observeOn(AndroidSchedulers.mainThread()).subscribe(handler);
         val subscription = subject.ofType(tClass).observeOn(AndroidSchedulers.mainThread())
             .subscribe(handler, onError, onCompleted)
@@ -51,17 +49,6 @@ object RxBus {
         trackListener(listenerTag, subscription)
 
         return subscription
-    }
-
-    fun <T> register(owner:LifecycleOwner,oClass: Class<T>,observer: Observer<T>){
-        owner.lifecycle.addObserver(OwnerLifeCycleObserver(owner))
-        observerTracker.put(owner,observer)
-        val liveData: MutableLiveData<Event<T>>
-        if(liveDataMap.containsKey(oClass)){
-            liveData = liveDataMap[oClass] as MutableLiveData<Event<T>>
-        }
-        else
-            liveDataMap.put(oClass,MutableLiveData<Event<T>>())
     }
 
     fun post(event: Any) {
@@ -91,14 +78,5 @@ object RxBus {
 
     fun sendFinishedDetectionWithDialogEvent(faceCount:Int, total:Int){
         post(OnFinishedDetectionWithDialog(faceCount,total))
-    }
-
-    class OwnerLifeCycleObserver(var owner: LifecycleOwner?) : LifecycleObserver{
-
-        @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-        fun release(){
-            observerTracker.remove(owner)
-            owner = null
-        }
     }
 }

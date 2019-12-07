@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.annotation.Nullable
 import iam.immlkit.facedetector.R
 import iam.immlkit.facedetector.model.ServiceLocator
+import iam.immlkit.facedetector.model.rxbus.LiveDataEventBus
 import iam.immlkit.facedetector.model.rxbus.RxBus
 import iam.immlkit.facedetector.model.rxbus.events.OnFinishedDetectionWithNotification
 import iam.immlkit.facedetector.utils.GeneralUtils
@@ -30,6 +31,7 @@ class DetectionService : Service() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         val repo = ServiceLocator.getDetectionRepository(ServiceLocator.getAppDB(this),ServiceLocator.getFaceDetectionProcessor())
+        LiveDataEventBus.post("toast")
 
         //build foreground notification
         NotificationUtils.createNotificationChannel(this)
@@ -52,7 +54,7 @@ class DetectionService : Service() {
 
     private fun listenForEvents(){
         //show notification when finish detection
-        RxBus.listenFor(TAG,OnFinishedDetectionWithNotification::class.java,object : Action1<OnFinishedDetectionWithNotification>{
+        RxBus.subscribe(TAG,OnFinishedDetectionWithNotification::class.java,object : Action1<OnFinishedDetectionWithNotification>{
             override fun call(event: OnFinishedDetectionWithNotification?) {
                 val faceCount = event?.faceCount ?:0
                 val total = event?.totalDetected ?:0

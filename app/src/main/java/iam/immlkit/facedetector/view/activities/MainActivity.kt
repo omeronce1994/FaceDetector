@@ -2,14 +2,13 @@ package iam.immlkit.facedetector.view.activities
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.nfc.Tag
-import android.os.Build
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import iam.immlkit.facedetector.R
 import iam.immlkit.facedetector.model.ServiceLocator
+import iam.immlkit.facedetector.model.rxbus.LiveDataEventBus
 import iam.immlkit.facedetector.model.rxbus.RxBus
 import iam.immlkit.facedetector.model.rxbus.events.OnFinishedDetectionWithDialog
 import iam.immlkit.facedetector.utils.DialogUtils
@@ -53,7 +52,7 @@ class MainActivity : BaseActivity() {
     //We could listen to it view model but since this event fired when we know we are in foreground we can fire it here
     private fun listenForEvents() {
         //show dialog when face detection is finished
-        RxBus.listenFor(TAG,OnFinishedDetectionWithDialog::class.java, object : Action1<OnFinishedDetectionWithDialog>{
+        RxBus.subscribe(TAG,OnFinishedDetectionWithDialog::class.java, object : Action1<OnFinishedDetectionWithDialog>{
             override fun call(event: OnFinishedDetectionWithDialog?) {
                 val faceCount = event?.faceCount ?:0
                 val total = event?.totalDetected ?:0
@@ -61,6 +60,9 @@ class MainActivity : BaseActivity() {
                 showFinishDetectionDialog(text)
             }
         })
+        LiveDataEventBus.subscribe(this,String::class.java){
+            tv_toolbar_title.text = it
+        }
     }
 
     private fun showFinishDetectionDialog(message:String){

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import iam.immlkit.facedetector.R
 import iam.immlkit.facedetector.databinding.FragmentImageListBinding
 import iam.immlkit.facedetector.model.ServiceLocator
+import iam.immlkit.facedetector.model.rxbus.LiveDataEventBus
 import iam.immlkit.facedetector.view.BaseFragment
 import iam.immlkit.facedetector.view.imageadapter.ImagesAdapter
 import iam.immlkit.facedetector.view.itemdecorations.GridItemDecoration
@@ -83,5 +85,9 @@ class AllImagesFragment : BaseFragment() {
                 adapter.submitList(it)
             }
         })
+
+        LiveDataEventBus.subscribe(viewLifecycleOwner,String::class.java) {
+            Toast.makeText(activity,it,Toast.LENGTH_LONG).show()
+        }
     }
 }
