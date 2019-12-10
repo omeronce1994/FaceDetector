@@ -24,7 +24,7 @@ object LiveDataEventBus {
 
     fun <T: Any> post(event: T){
         val tClass = event::class.java
-        val liveData : MutableLiveData<Event<T>> = liveDataMap[tClass] as EventMutableLiveData<T>
+        val liveData : EventMutableLiveData<T> = liveDataMap[tClass] as EventMutableLiveData<T>
         liveData.postValue(Event(event))
     }
 }
