@@ -5,19 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import iam.immlkit.facedetector.R
 import iam.immlkit.facedetector.databinding.FragmentImageListBinding
-import iam.immlkit.facedetector.model.ServiceLocator
 import iam.immlkit.facedetector.view.BaseFragment
-import iam.immlkit.facedetector.view.faceimages.FaceImagesFragment
 import iam.immlkit.facedetector.view.imageadapter.ImagesAdapter
 import iam.immlkit.facedetector.view.itemdecorations.GridItemDecoration
-import iam.immlkit.facedetector.viewmodel.images.FaceImagesViewModel
 import iam.immlkit.facedetector.viewmodel.images.NonFacesImagesViewModel
-import java.lang.IllegalStateException
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class NonFacesImagesFragment: BaseFragment() {
 
@@ -35,15 +30,7 @@ class NonFacesImagesFragment: BaseFragment() {
     }
 
     //lazy inity to view model so it will be immutable
-    private val viewModel: NonFacesImagesViewModel by lazy {
-        if(activity==null)
-            throw IllegalStateException("Must access view model only after onAttached so that activity is not null")
-        val act: FragmentActivity = activity!!
-        val application = act.application
-        val repo = ServiceLocator.getNonFaceImagesRepository(act)
-        val factory = ServiceLocator.getImagesFactory(application,repo)
-        ViewModelProviders.of(this,factory).get(NonFacesImagesViewModel::class.java)
-    }
+    private val viewModel: NonFacesImagesViewModel by viewModel()
 
     private lateinit var binding: FragmentImageListBinding
     private val adapter: ImagesAdapter by lazy { ImagesAdapter() }

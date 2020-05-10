@@ -5,9 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProviders
 import iam.immlkit.facedetector.R
-import iam.immlkit.facedetector.model.ServiceLocator
 import iam.immlkit.facedetector.model.rxbus.LiveDataEventBus
 import iam.immlkit.facedetector.model.rxbus.RxBus
 import iam.immlkit.facedetector.model.rxbus.events.OnFinishedDetectionWithDialog
@@ -19,7 +17,6 @@ import iam.immlkit.facedetector.view.allimages.AllImagesFragment
 import iam.immlkit.facedetector.view.faceimages.FaceImagesFragment
 import iam.immlkit.facedetector.view.nonfacesimages.NonFacesImagesFragment
 import iam.immlkit.facedetector.viewmodel.detection.DetectionViewModel
-import iam.immlkit.facedetector.viewmodel.detection.DetectionViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import rx.functions.Action1

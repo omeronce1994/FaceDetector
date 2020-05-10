@@ -4,14 +4,10 @@ import android.app.Application
 import android.content.Context
 import iam.immlkit.facedetector.repos.detection.DetectionRepository
 import iam.immlkit.facedetector.viewmodel.BaseViewModel
-import androidx.core.content.ContextCompat
 import android.content.Intent
 import androidx.lifecycle.viewModelScope
-import iam.immlkit.facedetector.model.ServiceLocator
 import iam.immlkit.facedetector.model.room.daos.AppDB
-import iam.immlkit.facedetector.utils.GeneralUtils
 import iam.immlkit.facedetector.view.service.detection.DetectionService
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject

@@ -1,6 +1,5 @@
 package iam.immlkit.facedetector.view.service.detection
 
-import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
@@ -8,10 +7,8 @@ import androidx.annotation.Nullable
 import androidx.lifecycle.LifecycleService
 import iam.immlkit.facedetector.R
 import iam.immlkit.facedetector.model.Result
-import iam.immlkit.facedetector.model.ServiceLocator
 import iam.immlkit.facedetector.model.rxbus.LiveDataEventBus
 import iam.immlkit.facedetector.model.rxbus.RxBus
-import iam.immlkit.facedetector.model.rxbus.events.OnFinishedDetectionWithNotification
 import iam.immlkit.facedetector.model.vision.face.FaceResults
 import iam.immlkit.facedetector.repos.detection.DetectionRepository
 import iam.immlkit.facedetector.utils.GeneralUtils
@@ -24,7 +21,6 @@ import omeronce.android.smartactivitymanager.SmartActivityManager
 import omeronce.android.smartactivitymanager.enums.AppState
 import omeronce.android.smartactivitymanager.ktextensions.AppStateObserver
 import org.koin.android.ext.android.get
-import rx.functions.Action1
 
 
 class DetectionService : LifecycleService() {

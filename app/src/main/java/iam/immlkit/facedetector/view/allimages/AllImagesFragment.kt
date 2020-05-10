@@ -6,19 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import iam.immlkit.facedetector.R
 import iam.immlkit.facedetector.databinding.FragmentImageListBinding
-import iam.immlkit.facedetector.model.ServiceLocator
 import iam.immlkit.facedetector.model.rxbus.LiveDataEventBus
 import iam.immlkit.facedetector.view.BaseFragment
 import iam.immlkit.facedetector.view.imageadapter.ImagesAdapter
 import iam.immlkit.facedetector.view.itemdecorations.GridItemDecoration
 import iam.immlkit.facedetector.viewmodel.images.AllImagesViewModel
-import iam.immlkit.facedetector.viewmodel.images.ImagesViewModelFactory
-import java.lang.IllegalStateException
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class AllImagesFragment : BaseFragment() {
 
@@ -36,15 +32,7 @@ class AllImagesFragment : BaseFragment() {
     }
 
     //lazy inity to view model so it will be immutable
-    private val viewModel: AllImagesViewModel by lazy {
-        if(activity==null)
-            throw IllegalStateException("Must access view model only after onAttached so that activity is not null")
-        val act:FragmentActivity = activity!!
-        val application = act.application
-        val repo = ServiceLocator.getAllImagesRepository(act)
-        val factory = ServiceLocator.getImagesFactory(application,repo)
-        ViewModelProviders.of(this,factory).get(AllImagesViewModel::class.java)
-    }
+    private val viewModel: AllImagesViewModel by viewModel()
 
     private lateinit var binding: FragmentImageListBinding
     private val adapter: ImagesAdapter by lazy { ImagesAdapter() }
