@@ -24,11 +24,11 @@ object ServiceLocator {
 
     fun getDetectionRepository(db:AppDB,processor:  VisionProcessor<MutableList<FirebaseVisionFace>>) = DetectionRepositoryImpl.getInstance(db.imagesDao(),processor)
 
-    fun getAllImagesRepository(db: AppDB) = AllImagesRepository(db.imagesDao())
+    fun getAllImagesRepository(context: Context) = AllImagesRepository(getAppDB(context).imagesDao())
 
-    fun getFaceImagesRepository(db: AppDB) = FaceImagesRepository(db.imagesDao())
+    fun getFaceImagesRepository(context: Context) = FaceImagesRepository(getAppDB(context).imagesDao())
 
-    fun getNonFaceImagesRepository(db: AppDB) = NonFacesImagesRepository(db.imagesDao())
+    fun getNonFaceImagesRepository(context: Context) = NonFacesImagesRepository(getAppDB(context).imagesDao())
 
     fun getImagesFactory(application: Application,imageRepository: ImageRepository) = ImagesViewModelFactory(application,imageRepository)
 }

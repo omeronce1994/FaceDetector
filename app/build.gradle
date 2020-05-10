@@ -37,6 +37,7 @@ android {
 dependencies {
     def room_version = "2.2.5"
     def paging_version = "2.1.0"
+    def koin_version= "2.1.5"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -66,6 +67,8 @@ dependencies {
     implementation 'io.reactivex:rxandroid:1.2.1'
 
     implementation 'com.github.omeronce1994:SmartActivityManager:v1.0.0'
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-android-viewmodel:$koin_version"
 
 
     testImplementation 'junit:junit:4.12'

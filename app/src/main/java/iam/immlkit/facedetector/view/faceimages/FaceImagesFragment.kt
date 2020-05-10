@@ -41,8 +41,7 @@ class FaceImagesFragment:BaseFragment() {
             throw IllegalStateException("Must access view model only after onAttached so that activity is not null")
         val act: FragmentActivity = activity!!
         val application = act.application
-        val db = ServiceLocator.getAppDB(act)
-        val repo = ServiceLocator.getFaceImagesRepository(db)
+        val repo = ServiceLocator.getFaceImagesRepository(act)
         val factory = ServiceLocator.getImagesFactory(application,repo)
         ViewModelProviders.of(this,factory).get(FaceImagesViewModel::class.java)
     }
