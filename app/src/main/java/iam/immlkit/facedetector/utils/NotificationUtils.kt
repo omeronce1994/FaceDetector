@@ -42,9 +42,9 @@ class NotificationUtils {
             .setOngoing(false)
             .build()
 
-        fun showNotification(context: Context,notification: Notification){
+        fun showNotification(context: Context,notification: Notification, notifId: Int = NOTIF_ID){
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.notify(NOTIF_ID, notification)
+            notificationManager.notify(notifId, notification)
         }
     }
 

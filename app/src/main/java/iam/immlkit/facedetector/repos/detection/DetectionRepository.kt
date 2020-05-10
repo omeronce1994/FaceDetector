@@ -5,6 +5,8 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import iam.immlkit.facedetector.model.ImageModel
+import iam.immlkit.facedetector.model.Result
+import iam.immlkit.facedetector.model.vision.face.FaceResults
 
 /***
  * Interface for each detection repository to implement
@@ -14,15 +16,10 @@ interface DetectionRepository {
     /**
      * load images from disk
      */
-    fun loadFromDisk():Unit
+    suspend fun loadFromDisk():Unit
 
     /**
      * Imlement image processing logic here
      */
-    fun detect(application: Application)
-
-    /**
-     * used to stop detection and free resources
-     */
-    fun stopDetection()
+    suspend fun detect(application: Application): Result<FaceResults>
 }

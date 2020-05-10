@@ -145,6 +145,9 @@ class MainActivity : BaseActivity() {
         btn_detect.setOnClickListener{
             viewModel.detect(this)
         }
+        btn_clear.setOnClickListener {
+            viewModel.clearAllTables()
+        }
         viewModel.loadFromDisk()
     }
 

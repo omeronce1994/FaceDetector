@@ -8,8 +8,10 @@
 
     <!--activity_main-->
     <string name="btn_detect_text">Detect</string>
+    <string name="btn_clear_all">Clear All</string>
 
     <!--notification-->
     <string name="notification_detecting_text">Detecting Faces...</string>
     <string name="format_detction_results_text">%1$d/%2$d Faces Detected</string>
+    <string name="failed_to_complete_detection_process">Failed to complete detection process</string>
 </resources>

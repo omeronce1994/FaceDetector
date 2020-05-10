@@ -13,11 +13,13 @@ import com.google.firebase.ml.vision.face.FirebaseVisionFace
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions
 import iam.immlkit.facedetector.R
+import iam.immlkit.facedetector.model.Result
 import iam.immlkit.facedetector.model.vision.VisionProcessor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import java.lang.Exception
 
 class FaceDetectionProcessor : VisionProcessor<MutableList<FirebaseVisionFace>> {
 
@@ -47,16 +49,18 @@ class FaceDetectionProcessor : VisionProcessor<MutableList<FirebaseVisionFace>> 
     override suspend fun processSuspended(
         context: Context,
         uri: Uri
-    ): VisionProcessor.Result<MutableList<FirebaseVisionFace>> {
+    ): Result<MutableList<FirebaseVisionFace>> {
         //load image file to ML-KIT FirebaseVisionImage object
         val image: FirebaseVisionImage
+        var result: Result<MutableList<FirebaseVisionFace>>
         try {
             image = FirebaseVisionImage.fromFilePath(context, uri)
-            return VisionProcessor.Result(getFaces(image))
+            result =  Result.Success(getFaces(image))
         } catch (e: IOException) {
             e.printStackTrace()
+            result = Result.Error(e)
         }
-        return VisionProcessor.Result(mutableListOf<FirebaseVisionFace>())
+        return result
     }
 
     /**
