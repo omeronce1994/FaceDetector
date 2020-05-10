@@ -38,14 +38,14 @@ interface ImagesDao {
      * Return Only NonFaces Images. Boolean values are stored as integers 0 (false) and 1 (true) in SQLITE
      */
     @Query("SELECT * FROM ImageModel WHERE isFace = 0 AND isAnalyzed = 0 ORDER BY path COLLATE NOCASE DESC")
-    fun allNonAnalyzedImages(): List<ImageModel>
+    suspend fun allNonAnalyzedImages(): List<ImageModel>
 
     /**
      * Insert Multiple items in one transaction. Ignore on conflict so that on new session when we will load from folder file with same path wont override
      * already analyzed images
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(imageModels: List<ImageModel>)
+    suspend fun insert(imageModels: List<ImageModel>)
 
     /**
      * Insert single item in one transaction. Ignore on conflict so that on new session when we will load from folder file with same path wont override
@@ -64,5 +64,5 @@ interface ImagesDao {
      * Update single item in one transaction
      */
     @Update
-    fun update(imageModels: ImageModel)
+    suspend fun update(imageModels: ImageModel)
 }

@@ -41,19 +41,12 @@ class DetectionRepositoryImpl private constructor(private val dao: ImagesDao,pri
      * load all images from folder
      */
     override suspend fun loadFromDisk() {
-        insertAll()
-    }
-
-    /**
-     * Insert all images in seperate coroutine
-     */
-    private suspend fun insertAll() = withContext(Dispatchers.IO){
         dao.insert(FileUtils.getAllImagesFiles().map { ImageModel.mapObjectFromFile(it) })
     }
 
     override suspend fun detect(application: Application): Result<FaceResults> {
         //load only images that were not analyzed before
-        val nonAnalyzedImages = getNonAnalyzedImages()
+        val nonAnalyzedImages = dao.allNonAnalyzedImages()
         var faceCount = 0
         //detect faces on each image
         nonAnalyzedImages.forEach {
@@ -65,7 +58,7 @@ class DetectionRepositoryImpl private constructor(private val dao: ImagesDao,pri
             if(newModel.isFace)
                 faceCount++
             Log.i(TAG,"detect: facecount: ${faceCount}")
-            updateImage(newModel)
+            dao.update(newModel)
         }
         Log.i(TAG,"detect: facecount end: ${faceCount}")
         return Result.Success(FaceResults(faceCount, nonAnalyzedImages.size))
@@ -76,19 +69,5 @@ class DetectionRepositoryImpl private constructor(private val dao: ImagesDao,pri
             is Result.Success -> ImageModel(nonAnalyzedImage.path, result.value.isNotEmpty(),true)
             is Result.Error -> ImageModel(nonAnalyzedImage.path, false, false)
         }
-    }
-
-    /**
-     * return only images that were not analyzed before
-     */
-    private suspend fun getNonAnalyzedImages() = withContext(Dispatchers.IO){
-        dao.allNonAnalyzedImages()
-    }
-
-    /**
-     * update processed image in db
-     */
-    private suspend fun updateImage(newModel: ImageModel) = withContext(Dispatchers.IO){
-        dao.update(newModel)
     }
 }
