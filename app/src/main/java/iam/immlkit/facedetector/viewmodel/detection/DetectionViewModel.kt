@@ -8,13 +8,18 @@ import androidx.core.content.ContextCompat
 import android.content.Intent
 import androidx.lifecycle.viewModelScope
 import iam.immlkit.facedetector.model.ServiceLocator
+import iam.immlkit.facedetector.model.room.daos.AppDB
 import iam.immlkit.facedetector.utils.GeneralUtils
 import iam.immlkit.facedetector.view.service.detection.DetectionService
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 
-class DetectionViewModel(application: Application, private val repository: DetectionRepository) : BaseViewModel(application) {
+class DetectionViewModel(application: Application, private val repository: DetectionRepository) : BaseViewModel(application), KoinComponent {
+
+    private val appDB: AppDB by inject()
 
     //initial load from disk
     fun loadFromDisk(){
@@ -35,8 +40,7 @@ class DetectionViewModel(application: Application, private val repository: Detec
 
     fun clearAllTables() {
         viewModelScope.launch {
-            ServiceLocator.getAppDB(getApplication()).clearAll()
+            appDB.clearAll()
         }
     }
-
 }

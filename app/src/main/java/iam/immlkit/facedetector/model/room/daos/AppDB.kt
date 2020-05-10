@@ -9,6 +9,7 @@ import iam.immlkit.facedetector.utils.ROOM_EXECUTOR
 import iam.immlkit.facedetector.utils.ioThread
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.internal.Internal.instance
 
 @Database(entities = arrayOf(ImageModel::class), version = 1)
 abstract class AppDB : RoomDatabase() {
@@ -16,26 +17,6 @@ abstract class AppDB : RoomDatabase() {
     abstract fun imagesDao(): ImagesDao
 
     suspend fun clearAll() = withContext(Dispatchers.IO) {
-        instance?.clearAllTables()
-    }
-
-    companion object {
-
-        // For Singleton instantiation
-        @Volatile
-        private var instance: AppDB? = null
-
-        fun getInstance(context: Context): AppDB {
-            return instance ?: synchronized(this) {
-                instance ?: buildDatabase(context).also { instance = it }
-            }
-        }
-
-        private fun buildDatabase(context: Context): AppDB {
-            return Room.databaseBuilder(context, AppDB::class.java, "images-db")
-                .setTransactionExecutor(ROOM_EXECUTOR)
-                .fallbackToDestructiveMigration()
-                .build()
-        }
+        clearAllTables()
     }
 }

@@ -18,23 +18,11 @@ import omeronce.android.smartactivitymanager.SmartActivityManager
 import omeronce.android.smartactivitymanager.enums.AppState
 import java.io.File
 
-class DetectionRepositoryImpl private constructor(private val dao: ImagesDao,private val processor:  VisionProcessor<MutableList<FirebaseVisionFace>>) :
+class DetectionRepositoryImpl (private val dao: ImagesDao,private val processor:  VisionProcessor<MutableList<FirebaseVisionFace>>) :
     DetectionRepository {
 
     companion object{
-
         val TAG = "DetectionRepo"
-
-        @Volatile
-        private var instance: DetectionRepositoryImpl? = null
-
-        fun getInstance(dao: ImagesDao,processor:  VisionProcessor<MutableList<FirebaseVisionFace>>): DetectionRepositoryImpl {
-            return instance
-                ?: synchronized(this) {
-                instance
-                    ?: DetectionRepositoryImpl(dao,processor).also { instance = it }
-            }
-        }
     }
 
     /**

@@ -12,23 +12,19 @@ import iam.immlkit.facedetector.repos.images.FaceImagesRepository
 import iam.immlkit.facedetector.repos.images.ImageRepository
 import iam.immlkit.facedetector.repos.images.NonFacesImagesRepository
 import iam.immlkit.facedetector.viewmodel.images.ImagesViewModelFactory
+import org.koin.core.KoinComponent
+import org.koin.core.get
 
 /**
  * ServiceLocator provides object instances. can later be used for testing
  */
-object ServiceLocator {
+object ServiceLocator: KoinComponent {
 
-    fun getAppDB(context: Context) = AppDB.getInstance(context)
+    fun getAllImagesRepository(context: Context) = AllImagesRepository(get())
 
-    fun getFaceDetectionProcessor() = FaceDetectionProcessor()
+    fun getFaceImagesRepository(context: Context) = FaceImagesRepository(get())
 
-    fun getDetectionRepository(db:AppDB,processor:  VisionProcessor<MutableList<FirebaseVisionFace>>) = DetectionRepositoryImpl.getInstance(db.imagesDao(),processor)
-
-    fun getAllImagesRepository(context: Context) = AllImagesRepository(getAppDB(context).imagesDao())
-
-    fun getFaceImagesRepository(context: Context) = FaceImagesRepository(getAppDB(context).imagesDao())
-
-    fun getNonFaceImagesRepository(context: Context) = NonFacesImagesRepository(getAppDB(context).imagesDao())
+    fun getNonFaceImagesRepository(context: Context) = NonFacesImagesRepository(get())
 
     fun getImagesFactory(application: Application,imageRepository: ImageRepository) = ImagesViewModelFactory(application,imageRepository)
 }

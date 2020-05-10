@@ -21,6 +21,7 @@ import iam.immlkit.facedetector.view.nonfacesimages.NonFacesImagesFragment
 import iam.immlkit.facedetector.viewmodel.detection.DetectionViewModel
 import iam.immlkit.facedetector.viewmodel.detection.DetectionViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.viewmodel.ext.android.viewModel
 import rx.functions.Action1
 
 class MainActivity : BaseActivity() {
@@ -32,14 +33,7 @@ class MainActivity : BaseActivity() {
         val RQ_PERMISSIONS = 101
     }
 
-    private val viewModel: DetectionViewModel by lazy {
-        val application = application
-        val db = ServiceLocator.getAppDB(this)
-        val processor = ServiceLocator.getFaceDetectionProcessor()
-        val repo = ServiceLocator.getDetectionRepository(db,processor)
-        val factory = DetectionViewModelFactory(application,repo)
-        ViewModelProviders.of(this,factory).get(DetectionViewModel::class.java)
-    }
+    private val viewModel: DetectionViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

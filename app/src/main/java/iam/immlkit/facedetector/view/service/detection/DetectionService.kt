@@ -13,6 +13,7 @@ import iam.immlkit.facedetector.model.rxbus.LiveDataEventBus
 import iam.immlkit.facedetector.model.rxbus.RxBus
 import iam.immlkit.facedetector.model.rxbus.events.OnFinishedDetectionWithNotification
 import iam.immlkit.facedetector.model.vision.face.FaceResults
+import iam.immlkit.facedetector.repos.detection.DetectionRepository
 import iam.immlkit.facedetector.utils.GeneralUtils
 import iam.immlkit.facedetector.utils.NotificationUtils
 import kotlinx.coroutines.CoroutineScope
@@ -22,6 +23,7 @@ import kotlinx.coroutines.launch
 import omeronce.android.smartactivitymanager.SmartActivityManager
 import omeronce.android.smartactivitymanager.enums.AppState
 import omeronce.android.smartactivitymanager.ktextensions.AppStateObserver
+import org.koin.android.ext.android.get
 import rx.functions.Action1
 
 
@@ -86,7 +88,7 @@ class DetectionService : LifecycleService() {
             return
         }
         isDetecting = true
-        val repo = ServiceLocator.getDetectionRepository(ServiceLocator.getAppDB(this),ServiceLocator.getFaceDetectionProcessor())
+        val repo = get<DetectionRepository>()
         LiveDataEventBus.post("toast")
         serviceScope.launch {
             val result = repo.detect(application)
