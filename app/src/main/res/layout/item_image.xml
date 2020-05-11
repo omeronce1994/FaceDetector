@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-   <iam.immlkit.facedetector.view.custom.SqaureImageView
-   android:id="@+id/ivImage"
-   android:layout_width="match_parent"
-   android:layout_height="match_parent"
-   android:scaleType="fitXY"
-   />
+    <data>
+
+        <variable
+            name="image"
+            type="iam.immlkit.facedetector.model.ImageModel" />
+    </data>
+
+    <iam.immlkit.facedetector.view.custom.SqaureImageView
+        android:id="@+id/ivImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        app:imageFromUrl="@{image.path}"
+        />
 
 </layout>

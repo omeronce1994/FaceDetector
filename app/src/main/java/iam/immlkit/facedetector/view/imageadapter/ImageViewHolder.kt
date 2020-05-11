@@ -17,20 +17,12 @@ import java.io.File
 import java.lang.Exception
 import java.net.URI
 
-class ImageViewHolder(parent:ViewGroup): RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(
-    R.layout.item_image,parent,false)) {
-
-    var binding: ItemImageBinding? = null
-
-    init {
-        binding = DataBindingUtil.bind(itemView)
-    }
+class ImageViewHolder(private val binding: ItemImageBinding): RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: ImageModel){
-        val context = itemView.context
-        val file = File(item.path)
-        val uri = FileUtils.getDownloadFolderUri(context,file)
-        //just load image to view (no need to consider ratio in our case)
-        Picasso.get().load(uri).fit().into(binding?.ivImage)
+        binding?.apply {
+            image = item
+            executePendingBindings()
+        }
     }
 }

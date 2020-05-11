@@ -35,11 +35,7 @@ class AllImagesFragment : BaseFragment() {
     private val viewModel: AllImagesViewModel by viewModel()
 
     private lateinit var binding: FragmentImageListBinding
-    private val adapter: ImagesAdapter by lazy { ImagesAdapter() }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val adapter: ImagesAdapter by lazy { ImagesAdapter{Toast.makeText(activity, it.path, Toast.LENGTH_LONG).show()} }
 
     override fun onCreateView(
         inflater: LayoutInflater,

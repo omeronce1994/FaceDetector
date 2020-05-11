@@ -1,14 +1,26 @@
 package iam.immlkit.facedetector.view.imageadapter
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import iam.immlkit.facedetector.R
+import iam.immlkit.facedetector.databinding.ItemImageBinding
 import iam.immlkit.facedetector.model.ImageModel
 
-class ImagesAdapter : PagedListAdapter<ImageModel, ImageViewHolder>(diffCallback) {
+class ImagesAdapter(var clickListener: (image: ImageModel) -> Unit = {}) : PagedListAdapter<ImageModel, ImageViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        return ImageViewHolder(parent)
+        val binding: ItemImageBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context),
+            R.layout.item_image, parent, false)
+        val viewHolder = ImageViewHolder(binding)
+        binding.root.setOnClickListener{
+            val item = getItem(viewHolder.adapterPosition)
+            item?.let { clickListener(it) }
+        }
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
