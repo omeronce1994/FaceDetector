@@ -67,6 +67,7 @@ dependencies {
     implementation 'io.reactivex:rxandroid:1.2.1'
 
     implementation 'com.github.omeronce1994:SmartActivityManager:v1.0.0'
+    implementation 'com.github.omeronce1994:OneLinerAdapter:1.0.0'
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-android-viewmodel:$koin_version"
 

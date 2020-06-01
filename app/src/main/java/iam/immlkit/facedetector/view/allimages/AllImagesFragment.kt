@@ -7,13 +7,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import iam.immlkit.facedetector.BR
 import iam.immlkit.facedetector.R
 import iam.immlkit.facedetector.databinding.FragmentImageListBinding
+import iam.immlkit.facedetector.model.ImageModel
 import iam.immlkit.facedetector.model.rxbus.LiveDataEventBus
 import iam.immlkit.facedetector.view.BaseFragment
 import iam.immlkit.facedetector.view.imageadapter.ImagesAdapter
 import iam.immlkit.facedetector.view.itemdecorations.GridItemDecoration
 import iam.immlkit.facedetector.viewmodel.images.AllImagesViewModel
+import omeronce.android.onelineradapter.adapters.OneLinerAdapter
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class AllImagesFragment : BaseFragment() {
@@ -35,7 +38,9 @@ class AllImagesFragment : BaseFragment() {
     private val viewModel: AllImagesViewModel by viewModel()
 
     private lateinit var binding: FragmentImageListBinding
-    private val adapter: ImagesAdapter by lazy { ImagesAdapter{Toast.makeText(activity, it.path, Toast.LENGTH_LONG).show()} }
+    private val adapter by lazy { OneLinerAdapter.Builder<ImageModel>().withLayout(R.layout.item_image).toVariableId(BR.image).withItemClickListener {
+        Toast.makeText(activity, it.path, Toast.LENGTH_LONG).show()
+    }.setDiffUtil(ImageModel.diffCallback).paged().build() }
 
     override fun onCreateView(
         inflater: LayoutInflater,

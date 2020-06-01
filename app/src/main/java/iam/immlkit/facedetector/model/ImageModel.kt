@@ -1,6 +1,7 @@
 package iam.immlkit.facedetector.model
 
 import androidx.annotation.NonNull
+import androidx.recyclerview.widget.DiffUtil
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -22,5 +23,13 @@ data class ImageModel(@PrimaryKey@NonNull@ColumnInfo(name = "path") val path:Str
             isFace = false,
             isAnalyzed = false
         )
+
+        val diffCallback = object : DiffUtil.ItemCallback<ImageModel>() {
+            override fun areItemsTheSame(oldItem: ImageModel, newItem: ImageModel): Boolean =
+                oldItem.path == newItem.path
+
+            override fun areContentsTheSame(oldItem: ImageModel, newItem: ImageModel): Boolean =
+                oldItem.path == newItem.path
+        }
     }
 }
